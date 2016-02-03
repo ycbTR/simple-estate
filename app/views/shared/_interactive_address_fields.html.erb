@@ -1,0 +1,145 @@
+<div id="map-canvas" class="google-maps col-md-12 col-xs-12" style="height:304px;border:solid 1px #ccc;"></div>
+<% if defined? f %>
+    <%= f.hidden_field :lat, :id => 'latitude' %>
+    <%= f.hidden_field :long, :id => 'longitude' %>
+<% else %>
+    <%= hidden_field_tag :lat, @property.lat, :id => 'latitude' %>
+    <%= hidden_field_tag :long, @property.long, :id => 'longitude' %>
+<% end %>
+<script type="text/javascript">
+    var selected = false;
+    var autSelectInterval = "";
+    $(document).ready(function () {
+        zoom = 14;
+        var latitude_val = $("#latitude").val();
+        var longitude_val = $("#longitude").val();
+
+        if (latitude_val == "")  (latitude_val = 40.99959341455489);
+        if (longitude_val == "")  (longitude_val = 28.948974609375);
+// init map
+        var map = new google.maps.Map(document.getElementById('map-canvas'), {
+            zoom: zoom,
+            center: new google.maps.LatLng(latitude_val, longitude_val),
+//            scrollwheel: false,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+        window.map = map;
+
+        if (map) {
+            placeMarker(map.center)
+        }
+        var marker;
+//
+
+        function placeMarker(location) {
+            geocoder = new google.maps.Geocoder();
+            if (marker) {
+                marker.setPosition(location);
+            } else {
+                marker = new google.maps.Marker({
+                    position: location,
+                    map: map,
+                    draggable: Boolean('<%= j defined? f %>')
+                });
+
+                google.maps.event.addListener(marker, 'dragend', function () {
+                    // Get the Current position, where the pointer was dropped
+                    var point = marker.getPosition();
+                    // Center the map at given point
+                    map.panTo(point);
+                    // Update the textbox
+                    placeMarker(marker.getPosition());
+                });
+
+            }
+            set_new_values(location);
+        };
+
+        function set_address() {
+
+            country = $("input[id$='_country']").val() || "";
+            city = $("input[id$='_city']").val() || "";
+            zipcode = $("input[id$='_zipcode']").val() || "";
+            street1 = $("input[id$='street1']").val() || "";
+            street2 = $("input[id$='street2']").val() || "";
+
+
+            zoom = 5
+            if (country.length > 0) {
+                zoom = 5
+            }
+            if (city.length > 0) {
+                zoom = 10
+            }
+            if (zipcode.length > 0) {
+                zoom = 12
+            }
+            if (street1.length > 0) {
+                zoom = 14
+            }
+            if (street2.length > 0) {
+                zoom = 14
+            }
+
+
+            address = street1 + ' ' + street2 + ' ' + ' ' + city + ' ' + zipcode + ' ' + country
+            set_map();
+            return true
+        };
+
+        function set_new_values(map_loc) {
+            $("#latitude").val(map_loc.lat())
+            $("#longitude").val(map_loc.lng())
+        };
+
+        function refresh_map() {
+            setTimeout(set_address, 300);
+        };
+
+        function set_map() {
+            geocoder = new google.maps.Geocoder();
+
+            geocoder.geocode({ 'address': address }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    map_loc = results[0].geometry.location;
+                    window.map.setCenter(map_loc);
+                    google.maps.event.trigger(window.map, 'resize');
+
+                    map.setCenter(map_loc);
+                    map.setZoom(zoom);
+                    placeMarker(map_loc);
+                }
+            });
+        };
+        <% if defined? f %>
+        google.maps.event.addListener(map, 'click', function (event) {
+            placeMarker(event.latLng);
+        });
+        <% end %>
+
+
+        $("input[id$='_city']").on('focusout', function () {
+            city = $(this).val();
+            refresh_map();
+        });
+        $("input[id$='_zipcode']").on('focusout', function () {
+            zipcode = $(this).val();
+            refresh_map();
+        });
+        $("input[id$='_street1']").on('focusout', function () {
+            street1 = $(this).val();
+            refresh_map();
+        });
+
+        $("input[id$='_street2']").on('focusout', function () {
+            street2 = $(this).val();
+            refresh_map();
+        });
+
+        $("input[id$='_region']").on('focusout', function () {
+            region = $(this).val();
+            refresh_map();
+        });
+    });
+
+</script>

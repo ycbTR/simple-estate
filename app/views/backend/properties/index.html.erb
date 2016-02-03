@@ -1,0 +1,18 @@
+<% if @properties.blank? %>
+    <div>No property found</div>
+<% else %>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Title</th>
+        <th>City</th>
+        <th>country</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <%= render @properties %>
+      </tbody>
+    </table>
+    <%= paginate @properties, theme: 'twitter-bootstrap-3' %>
+<% end %>

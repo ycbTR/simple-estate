@@ -1,0 +1,23 @@
+<%= simple_form_for([:backend, @property], validate: true) do |f| %>
+    <%= f.error_notification %>
+    <div class="form-inputs">
+      <%= f.input :listing_type, collection: ['For Rent', 'For Sale'], as: :select %>
+      <%= f.input :title %>
+      <%= image_tag @property.image.url(:thumb) %>
+      <%= f.input :image %>
+      <%= f.input :description, as: :text %>
+      <%= f.input :price, as: :string, label: 'Price (USD)' %>
+      <%= f.input :country %>
+      <%= f.input :city %>
+      <%= f.input :street1 %>
+      <%= f.input :street2, label: 'Address' %>
+      <%= f.input :zipcode %>
+    </div>
+    <div class="row">
+      <%= render :partial => "shared/interactive_address_fields", :locals => {:f => f} %>
+    </div>
+    <br/>
+    <div class="form-actions">
+      <%= f.button :submit %>
+    </div>
+<% end %>

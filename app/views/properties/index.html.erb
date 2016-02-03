@@ -1,0 +1,13 @@
+<%= paginate @properties, theme: 'twitter-bootstrap-3' %>
+
+<div class="well">
+  <%= render partial: 'map' %>
+</div>
+
+<div class="row">
+  <%= render @properties %>
+</div>
+
+<%= paginate @properties, theme: 'twitter-bootstrap-3' %>
+
+

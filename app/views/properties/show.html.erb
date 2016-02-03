@@ -1,0 +1,52 @@
+<% if @property.user == @current_user %>
+    <%= link_to 'Edit', edit_backend_property_path(@property) %> |
+    <%= link_to 'Back', backend_properties_path %>
+<% end %>
+
+<h2><%= @property.title %>
+  <small><%= number_to_currency @property.price %> - <%= @property.listing_type %>
+  </small>
+</h2>
+
+<div class="col-md-6">
+  <p>
+    <%= image_tag @property.image.url(:large), width: '100%' %>
+  </p>
+
+  <p><strong>Description:</strong>
+    <%= @property.description %>
+  </p>
+
+  <p>
+    <strong>City:</strong>
+    <%= @property.city %>
+  </p>
+
+  <p>
+    <strong>Country:</strong>
+    <%= @property.country %>
+  </p>
+
+  <p>
+    <strong>Street:</strong>
+    <%= @property.street1 %>
+  </p>
+
+  <p>
+    <strong>Street:</strong>
+    <%= @property.street2 %>
+  </p>
+
+  <p>
+    <strong>Zipcode:</strong>
+    <%= @property.zipcode %>
+  </p>
+
+  <p>
+    <strong>User:</strong>
+    <%= @property.user %>
+  </p></div>
+
+<div class="col-md-6">
+  <%= render :partial => "shared/interactive_address_fields" %>
+</div>
