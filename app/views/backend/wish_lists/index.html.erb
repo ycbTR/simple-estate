@@ -1,0 +1,28 @@
+<h1>My Wish List</h1>
+
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th>Image</th>
+    <th>Property</th>
+    <th><%= sort_link @search, :property_price, 'Price' %></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @wish_lists.each do |wish_list| %>
+      <% property = wish_list.property %>
+      <tr>
+        <td><%= image_tag property.image.url(:thumb), width: 100, height: 100 %></td>
+        <td>
+          <%= link_to property.title, property_path(property) %>
+          <br/>
+          <%= "#{property.city}, #{property.country}" %>
+        </td>
+        <td><%= number_to_currency property.price %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+<%= paginate @wish_lists, :theme => 'twitter-bootstrap-3' %>
+

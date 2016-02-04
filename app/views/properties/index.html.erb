@@ -1,5 +1,27 @@
 <%= paginate @properties, theme: 'twitter-bootstrap-3' %>
 
+  <%= search_form_for @search, html: {class: 'form-inline'} do |f| %>
+
+      <div class="form-group">
+        <label>Location</label>
+        <%= f.select :location_cont, [['All', nil]] + Property.locations.collect { |i| ["#{i[0]}, #{i[1]}"] } %>
+      </div>
+
+      <div class="form-group">
+        <label>Listing Type</label>
+        <%= f.select :listing_type_cont, [['All', nil], ['For Rent'], ['For Sale']] %>
+      </div>
+
+      <div class="form-group">
+        <label>Price</label>
+        <%= f.text_field :price_gteq, placeholder: 'From', class: 'form-control input-sm' %>
+        <%= f.text_field :price_lteq, placeholder: 'To', class: 'form-control input-sm' %>
+      </div>
+
+      <%= f.submit 'Search', class: 'btn btn-default' %>
+  <% end %>
+<div class="clearfix"></div>
+
 <div class="well">
   <%= render partial: 'map' %>
 </div>

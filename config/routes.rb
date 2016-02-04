@@ -1,12 +1,22 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
-  resources :properties, only: [:index, :show]
+
+
+  resources :properties, only: [:index, :show] do
+    member do
+      put :wish
+      put :unwish
+    end
+  end
+
   devise_for :users, :controllers => {:registrations => "users/registrations"}
 
 
   namespace :backend do
     resources :properties
     resources :reports
+    resources :wish_lists, only: :index
+
   end
 
   # The priority is based upon order of creation: first created -> highest priority.

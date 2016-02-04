@@ -6,10 +6,4 @@ class BaseController < ApplicationController
     User.current = @current_user
   end
 
-  private
-
-  def only_admin
-    redirect_to root_path and return unless @current_user.admin?
-  end
-
 end

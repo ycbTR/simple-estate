@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :properties
+  has_many :wish_lists
 
   scope :agent, -> { where(role: 'Agent') }
   scope :customer,  -> { where(role: 'Customer') }

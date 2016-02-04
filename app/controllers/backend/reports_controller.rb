@@ -1,6 +1,7 @@
 module Backend
   class ReportsController < Backend::BaseController
-        before_filter :only_admin
+    before_filter :only_admin
+
     def index
       @agent_count = User.agent.count
       @customer_count = User.customer.count
