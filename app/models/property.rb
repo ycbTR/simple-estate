@@ -8,7 +8,7 @@ class Property < ActiveRecord::Base
   validates_attachment_content_type :image, :content_type => /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/, :message => 'file type is not allowed (only jpeg/png/gif images)'
 
 
-  validates :title, :description, :country, :city, :street1, :listing_type, :price, :presence => true
+  validates :user, :title, :description, :country, :city, :street1, :listing_type, :price, :presence => true
   validates :price, numericality: true
 
   scope :for_rent, -> { where(listing_type: 'For Rent') }
@@ -24,6 +24,10 @@ class Property < ActiveRecord::Base
 
   def self.locations
     Property.order(:city).pluck(:city, :country).uniq
+  end
+
+  def location
+    "#{self.city}, #{self.country}"
   end
 
   def wished_by?(usr_id)

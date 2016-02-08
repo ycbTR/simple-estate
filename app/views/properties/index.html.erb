@@ -1,7 +1,7 @@
 <%= paginate @properties, theme: 'twitter-bootstrap-3' %>
 
   <%= search_form_for @search, html: {class: 'form-inline'} do |f| %>
-
+      <%= hidden_field_tag :by_filter, params[:by_filter] %>
       <div class="form-group">
         <label>Location</label>
         <%= f.select :location_cont, [['All', nil]] + Property.locations.collect { |i| ["#{i[0]}, #{i[1]}"] } %>
@@ -22,14 +22,24 @@
   <% end %>
 <div class="clearfix"></div>
 
-<div class="well">
-  <%= render partial: 'map' %>
-</div>
 
-<div class="row">
-  <%= render @properties %>
-</div>
 
-<%= paginate @properties, theme: 'twitter-bootstrap-3' %>
+<% if @properties.blank? %>
+                <p>No Property Found</p>
+                    <% if params[:by_filter] %>
+                    <p><%= link_to 'Clear filter', properties_path %></p>
+                    <% end %>
+<% else %>
 
+                    <div class="well">
+                      <%= render partial: 'map' %>
+                    </div>
+
+                    <div class="row">
+                      <%= render @properties %>
+                    </div>
+
+                    <%= paginate @properties, theme: 'twitter-bootstrap-3' %>
+
+<% end %>
 

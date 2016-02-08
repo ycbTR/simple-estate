@@ -1,6 +1,27 @@
 Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
 
+  namespace :api, :defaults => {:format => 'json'} do
+    namespace :v1 do
+      devise_scope :user do
+        post 'sessions' => 'sessions#create', :as => :login
+        delete 'sessions' => 'sessions#destroy', :as => 'logout'
+        post 'registrations' => 'registrations#create', :as => 'register'
+        put 'registrations' => 'registrations#update', :as => 'update'
+      end
+
+      get 'users/:id', to: 'users#show', as: :show_user
+      get 'users/:id/properties', to: 'users#properties', as: :user_properties
+
+      resources :properties, only: [:index, :show] do
+      member do
+        put :wish
+        put :unwish
+      end
+    end
+
+  end
+  end
 
   resources :properties, only: [:index, :show] do
     member do
@@ -24,6 +45,8 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'properties#index'
+
+  get 'users/:id', to: 'users#show', as: :show_user
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

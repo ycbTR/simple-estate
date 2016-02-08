@@ -5,7 +5,7 @@ class PropertiesController < Backend::BaseController
   # GET /properties
   # GET /properties.json
   def index
-    @properties = @current_user.properties.page(params[:page])
+    @properties = @current_user.properties.includes(:wish_lists).page(params[:page])
   end
 
   # GET /properties/1

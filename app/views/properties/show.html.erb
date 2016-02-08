@@ -1,20 +1,26 @@
-<% if @property.user == @current_user %>
-    <%= link_to 'Edit', edit_backend_property_path(@property) %> |
-    <%= link_to 'Back', backend_properties_path %>
-<% end %>
+<div class="col-md-12">
+  <% if @property.user == @current_user %>
+      <%= link_to 'Edit', edit_backend_property_path(@property) %> |
+      <%= link_to 'Back', backend_properties_path %>
+  <% end %>
 
 <h2><%= @property.title %>
   <small><%= number_to_currency @property.price %> - <%= @property.listing_type %>
   </small>
+  <br/>
+  <small>
+    <p id="wishLink"><%= wishlist_link(@property) %></p>
+  </small>
 </h2>
+</div>
 
 
 
 <div class="col-md-6">
-  <p id="wishLink"><%= wishlist_link(@property) %></p>
   <p>
     <%= image_tag @property.image.url(:large), width: '100%' %>
   </p>
+
 
   <p><strong>Description:</strong>
     <%= @property.description %>
@@ -47,8 +53,9 @@
 
   <p>
     <strong>User:</strong>
-    <%= @property.user %>
-  </p></div>
+    <%= link_to @property.user.fullname ,show_user_path(@property.user_id) %>
+  </p>
+</div>
 
 <div class="col-md-6">
   <%= render :partial => "shared/interactive_address_fields" %>
